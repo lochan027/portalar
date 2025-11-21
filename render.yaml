@@ -3,8 +3,7 @@ services:
   - type: web
     name: portalar-api
     runtime: node
-    region: oregon
-    plan: free
+    plan: starter
     rootDir: backend
     buildCommand: npm install
     startCommand: npm start
