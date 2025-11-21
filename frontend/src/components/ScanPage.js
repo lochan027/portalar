@@ -86,6 +86,30 @@ function ScanPage() {
   }, [markerId, webARSupported]);
 
   // Initialize AR scene after content loaded
+  const handleMarkerFound = useCallback(() => {
+    console.log('Marker detected!');
+    setMarkerVisible(true);
+    setShowInstructions(false);
+    scanStartTimeRef.current = Date.now();
+  }, []);
+
+  const handleMarkerLost = useCallback(() => {
+    console.log('Marker lost');
+    setMarkerVisible(false);
+
+    // Track view duration
+    if (scanStartTimeRef.current) {
+      const duration = (Date.now() - scanStartTimeRef.current) / 1000;
+      trackEvent({
+        markerId,
+        eventType: 'viewDuration',
+        sessionId: sessionIdRef.current,
+        duration,
+      });
+      scanStartTimeRef.current = null;
+    }
+  }, [markerId]);
+
   const initializeARScene = useCallback(() => {
     const scene = sceneRef.current;
     if (!scene) return;
@@ -110,7 +134,7 @@ function ScanPage() {
       console.log('AR.js video loaded');
       setCameraReady(true);
     });
-  }, []);
+  }, [handleMarkerFound, handleMarkerLost]);
 
   const cleanupARScene = useCallback(() => {
     const scene = sceneRef.current;
@@ -121,31 +145,7 @@ function ScanPage() {
       marker.removeEventListener('markerFound', handleMarkerFound);
       marker.removeEventListener('markerLost', handleMarkerLost);
     }
-  }, []);
-
-  const handleMarkerFound = useCallback(() => {
-    console.log('Marker detected!');
-    setMarkerVisible(true);
-    setShowInstructions(false);
-    scanStartTimeRef.current = Date.now();
-  }, []);
-
-  const handleMarkerLost = useCallback(() => {
-    console.log('Marker lost');
-    setMarkerVisible(false);
-
-    // Track view duration
-    if (scanStartTimeRef.current) {
-      const duration = (Date.now() - scanStartTimeRef.current) / 1000;
-      trackEvent({
-        markerId,
-        eventType: 'viewDuration',
-        sessionId: sessionIdRef.current,
-        duration,
-      });
-      scanStartTimeRef.current = null;
-    }
-  }, [markerId]);
+  }, [handleMarkerFound, handleMarkerLost]);
 
   useEffect(() => {
     if (!content || !webARSupported) return;
