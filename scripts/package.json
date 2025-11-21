@@ -1,0 +1,20 @@
+{
+  "name": "portal-ar-scripts",
+  "version": "1.0.0",
+  "description": "Utility scripts for PortalAR marker generation and asset optimization",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": ["qr", "marker", "ar"],
+  "author": "PortalAR Team",
+  "license": "MIT",
+  "dependencies": {
+    "qrcode": "^1.5.3",
+    "sharp": "^0.33.1",
+    "@napi-rs/canvas": "^0.1.66",
+    "pdfkit": "^0.13.0",
+    "commander": "^11.1.0",
+    "chalk": "^4.1.2"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "portal-ar",
+  "version": "1.0.0",
+  "description": "QR-Based Marker WebAR Platform - Dynamic AR experiences anchored to printed QR codes",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install && cd ../scripts && npm install && cd ../admin && npm install",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "serve:frontend": "cd frontend && npx serve -s build -l 3000",
+    "start": "npm run start:backend",
+    "start:backend": "cd backend && npm start",
+    "generate-qr": "node scripts/generate-qr.js",
+    "generate-marker": "node scripts/generate-marker.js",
+    "test-marker": "node scripts/test-marker.js",
+    "optimize-video": "node scripts/optimize-video.js",
+    "optimize-model": "node scripts/optimize-model.js",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && npm test"
+  },
+  "keywords": [
+    "webAR",
+    "QR",
+    "marker-tracking",
+    "AR.js",
+    "A-Frame",
+    "image-marker",
+    "expo",
+    "perplexity"
+  ],
+  "author": "PortalAR Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/portal-ar.git"
+  }
+}
