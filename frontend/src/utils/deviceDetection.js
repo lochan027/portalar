@@ -167,7 +167,7 @@ export function supportsWebGL() {
   }
 }
 
-export default {
+const deviceDetection = {
   checkWebARSupport,
   requestCameraPermission,
   getDeviceType,
@@ -177,3 +177,5 @@ export default {
   isLandscape,
   supportsWebGL,
 };
+
+export default deviceDetection;

@@ -126,7 +126,7 @@ function getDeviceType() {
   return 'desktop';
 }
 
-export default {
+const analyticsService = {
   startSession,
   endSession,
   trackEvent,
@@ -134,3 +134,5 @@ export default {
   trackClick,
   trackShare,
 };
+
+export default analyticsService;

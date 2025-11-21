@@ -11,7 +11,7 @@
  * Falls back to image marker if QR-based tracking fails.
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AROverlay from './AROverlay';
 import Controls from './Controls';
@@ -86,23 +86,7 @@ function ScanPage() {
   }, [markerId, webARSupported]);
 
   // Initialize AR scene after content loaded
-  useEffect(() => {
-    if (!content || !webARSupported) return;
-
-    // Wait for A-Frame to be ready
-    if (!window.AFRAME) {
-      console.error('A-Frame not loaded');
-      return;
-    }
-
-    initializeARScene();
-
-    return () => {
-      cleanupARScene();
-    };
-  }, [content, webARSupported]);
-
-  function initializeARScene() {
+  const initializeARScene = useCallback(() => {
     const scene = sceneRef.current;
     if (!scene) return;
 
@@ -126,9 +110,9 @@ function ScanPage() {
       console.log('AR.js video loaded');
       setCameraReady(true);
     });
-  }
+  }, []);
 
-  function cleanupARScene() {
+  const cleanupARScene = useCallback(() => {
     const scene = sceneRef.current;
     if (!scene) return;
 
@@ -137,16 +121,16 @@ function ScanPage() {
       marker.removeEventListener('markerFound', handleMarkerFound);
       marker.removeEventListener('markerLost', handleMarkerLost);
     }
-  }
+  }, []);
 
-  function handleMarkerFound() {
+  const handleMarkerFound = useCallback(() => {
     console.log('Marker detected!');
     setMarkerVisible(true);
     setShowInstructions(false);
     scanStartTimeRef.current = Date.now();
-  }
+  }, []);
 
-  function handleMarkerLost() {
+  const handleMarkerLost = useCallback(() => {
     console.log('Marker lost');
     setMarkerVisible(false);
 
@@ -161,7 +145,23 @@ function ScanPage() {
       });
       scanStartTimeRef.current = null;
     }
-  }
+  }, [markerId]);
+
+  useEffect(() => {
+    if (!content || !webARSupported) return;
+
+    // Wait for A-Frame to be ready
+    if (!window.AFRAME) {
+      console.error('A-Frame not loaded');
+      return;
+    }
+
+    initializeARScene();
+
+    return () => {
+      cleanupARScene();
+    };
+  }, [content, webARSupported, initializeARScene, cleanupARScene]);
 
   function handleContentClick() {
     trackEvent({
