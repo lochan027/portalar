@@ -142,7 +142,7 @@ function AROverlay({ content, markerId, onInteraction }) {
         </div>
 
         {/* Render 3D model in A-Frame marker */}
-        {renderAFrameModel(content.modelUrl)}
+        <Use3DModel modelUrl={content.modelUrl} />
       </div>
     );
   }
@@ -212,7 +212,7 @@ function getCTAStyle(style) {
   };
 }
 
-function renderAFrameModel(modelUrl) {
+function Use3DModel(modelUrl) {
   // Inject 3D model into A-Frame marker
   // This is a workaround since we can't directly inject A-Frame entities from React
   React.useEffect(() => {
